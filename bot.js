@@ -469,38 +469,6 @@ client.on("guildMemberRemove", async member => {
   }
 });
 
-var Enmap = require("enmap");
-client.antibots = new Enmap({ name: "chat" });
-var antibots = client.antibots;
-var julian = client;
-julian.on("message", codes => {
-  if (codes.content.startsWith(prefix + "antibots on")) {
-    if (
-      codes.author.bot ||
-      !codes.channel.guild ||
-      codes.author.id != codes.guild.ownerID
-    )
-      return;
-    antibots.set(`${codes.guild.id}`, {
-      onoff: "On"
-    });
-
-    codes.channel.send("AntiBots Join Is On");
-  }
-  if (codes.content.startsWith(prefix + "antibots off")) {
-    if (
-      codes.author.bot ||
-      !codes.channel.guild ||
-      codes.author.id != codes.guild.ownerID
-    )
-      return;
-    antibots.set(`${codes.guild.id}`, {
-      onoff: "Off"
-    });
-    codes.channel.send("AntiBots Join Is Off");
-  }
-});
-
 julian.on("guildMemberAdd", member => {
   if (!antibots.get(`${member.guild.id}`)) {
     antibots.set(`${member.guild.id}`, {
@@ -524,24 +492,6 @@ client.on("guildCreate", guild => {
 
 
 
-
-//........naqeb
-client.on("message", message => {
-  if (message.content.startsWith("+link")) {
-    message.channel
-      .createInvite({
-        thing: true,
-        maxUses: 100,
-        maxAge: 86400
-      })
-      .then(invite => message.author.sendMessage(invite.url));
-    message.channel.send("**:link:.لە تایبەت بۆت ھات**");
-
-    message.author.send(
-      `** https://discord.com/api/oauth2/authorize?client_id=718361751040688150&permissions=8&scope=bot**`
-    );
-  }
-});
 
 
 //.....antibots
@@ -586,6 +536,53 @@ client.user.setActivity("+help  Security", { type: "Playing" });
 client.user.setStatus("idle");
 });
 
+
+
+
+client.on("message", message => {
+  if (message.content === prefix + "settings") {
+    if (!message.member.hasPermission("Ownership"))
+      if (!message.channel.guild) return;
+    if (message.content < 1023) return;
+    const mrfix = new Discord.RichEmbed()
+      .setAuthor(client.user.username, client.user.avatarURL)
+      .setThumbnail(client.user.avatarURL).setDescription(`limitsban
+Enabled:🟢 
+Maximum Ban : ${config[message.guild.id].banLimit}
+-
+
+limitskick
+Enabled:🟢 
+Maximum Kick : ${config[message.guild.id].kickLimits}
+-
+limitsChannelD
+Enabled:🟢 
+Maximum Delete : ${config[message.guild.id].chaDelLimit}
+-
+limitsChannelC
+Enabled:🟢 
+Maximum Create : ${config[message.guild.id].chaCrLimit}
+-
+limitsRoleD
+Enabled:🟢 
+Maximum Delete : ${config[message.guild.id].roleDelLimit}
+-
+limitsRoleC
+Enabled:🟢 
+Maximum Create : ${config[message.guild.id].roleCrLimits}
+-
+limitsTime
+Enabled:🟢 
+Maximum Time : ${config[message.guild.id].time}
+`);
+
+    message.channel.sendEmbed();
+  }
+});
+
+
+
+
 client.on('message', message => {
 var prefix = "+" ;
 if (message.content.startsWith(prefix + "help")) 
@@ -615,6 +612,8 @@ let embed = new Discord.RichEmbed()
 | +antibots off
 
 | +link 
+
+| +settings
 **`)
  
  
@@ -625,4 +624,4 @@ message.channel.sendEmbed(embed);
     }
 });
 
-  client.login("NzExOTA0MzAwMDI0MjAxMjE2.XsJyiw.E878VkFhMMinmHE2aaDOJ5ko2M0");
+  client.login("..");
