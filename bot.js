@@ -615,7 +615,7 @@ client.on("message", message => {
     if (!message.member.hasPermission("Ownership"))
       if (!message.channel.guild) return;
     if (message.content < 1023) return;
-    const mrfix = new Discord.RichEmbed()
+    const naqeb = new Discord.RichEmbed()
       .setAuthor(client.user.username, client.user.avatarURL)
       .setThumbnail(client.user.avatarURL).setDescription(`limitsban
 Enabled:🟢 
